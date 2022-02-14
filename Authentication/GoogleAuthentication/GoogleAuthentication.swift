@@ -11,7 +11,7 @@ struct GoogleSignInUser {
     var imageURL: String?
 }
 
-fileprivate var signInConfig = GIDConfiguration.init(clientID: "439233323888-399evq08k3q7necoje3okmnm705lta8b.apps.googleusercontent.com")
+fileprivate var signInConfig = GIDConfiguration.init(clientID: "")
 
 class GoogleSignInHelper {
     
@@ -60,44 +60,4 @@ class GoogleSignInHelper {
        
     }
 }
-
-/*
- 
- Button("Sign in with google", action: {
-     GoogleSignInHelper.shared.signIn(completion: { response in
-         if response != nil {
-            // print()
-         }
-     })
- }).padding()
- 
- Button("Sign in with facebook", action: {
-     FBSignInHelper.shared.signIn()
- }).padding()
- 
- 
- 
- Button("Sign in With Apple", action: {
-     AppleSignInCoordinator().didTapButton1()
- }).padding()
- 
- Button("Camera Permission", action: {
-     CameraPermssion.shared.request(result: { isGranted in
-         if !isGranted {
-             CameraPermssion.shared.onDeniedOrRestricted()
-         }
-     })
-     
-     
- }).padding()
- 
- Button("Gallery Permission", action: {
-     GalleryPermssion.shared.request(result: { isGranted in
-         if !isGranted {
-             GalleryPermssion.shared.onDeniedOrRestricted()
-         }
-     })
- })
- 
- */
 
