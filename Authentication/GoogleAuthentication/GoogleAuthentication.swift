@@ -2,11 +2,22 @@
 import Foundation
 import GoogleSignIn
 
+struct GoogleSignInUser {
+    var userID: String?
+    var email: String?
+    var givenName: String?
+    var familyName: String?
+    var name: String?
+    var imageURL: String?
+}
+
+fileprivate var signInConfig = GIDConfiguration.init(clientID: "439233323888-399evq08k3q7necoje3okmnm705lta8b.apps.googleusercontent.com")
+
 class GoogleSignInHelper {
     
     public static var shared = GoogleSignInHelper()
     
-    func signIn(completion: @escaping (_ user: GIDGoogleUser?) -> Void) {
+    func signIn(completion: @escaping (_ user: GoogleSignInUser?) -> Void) {
         if !hasSignIn() {
             
             //Get Currunt RootView
@@ -15,17 +26,38 @@ class GoogleSignInHelper {
             
             GIDSignIn.sharedInstance.signIn(with: signInConfig, presenting: rootViewController) { user, error in
                 guard error == nil else { return }
-                if user != nil {
-                    completion(GIDSignIn.sharedInstance.currentUser)
+                if let user = GIDSignIn.sharedInstance.currentUser {
+                    completion(self.getGoogleSignInUser(user))
                 }
             }
         }else {
-            completion(GIDSignIn.sharedInstance.currentUser)
+            if let user = GIDSignIn.sharedInstance.currentUser {
+                completion(getGoogleSignInUser(user))
+            }
+            
         }
     }
     
     func hasSignIn() -> Bool {
         return GIDSignIn.sharedInstance.hasPreviousSignIn()
+    }
+    
+    func getGoogleSignInUser(_ user: GIDGoogleUser) -> GoogleSignInUser {
+        let userID = user.userID
+        let email = user.profile?.email
+        let givenName = user.profile?.givenName
+        let familyName = user.profile?.familyName
+        let name = user.profile?.name
+        var profilePicture: String?
+        if user.profile?.hasImage != nil {
+            let url = user.profile?.imageURL(withDimension: 300)
+            profilePicture = url?.absoluteString
+        }
+        
+        let googleUser = GoogleSignInUser(userID: userID, email: email, givenName: givenName, familyName: familyName, name: name, imageURL: profilePicture)
+        return googleUser
+        
+       
     }
 }
 
